@@ -18,6 +18,5 @@ export default async function handler(req, res) {
     getUrl(payloadData),
     requestOptions as RequestInit
   );
-  console.log(distanceData);
-  res.status(200).send({ message: 'OK' });
+  res.status(200).send({ data: distanceData });
 }
