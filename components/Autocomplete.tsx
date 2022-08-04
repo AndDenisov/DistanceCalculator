@@ -40,7 +40,6 @@ export default function AddressAutocomplete({ onChange, label }) {
   const [inputValue, setInputValue] = React.useState('');
   const [options, setOptions] = React.useState<readonly Suggestion[]>([]);
 
-  console.log(value);
 
   const fetchWithDebounce = React.useMemo(
     () =>

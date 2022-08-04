@@ -13,7 +13,6 @@ const requestOptions = {
 export default async function handler(req, res) {
   const { body } = req;
   const payloadData = JSON.parse(body);
-  console.log(payloadData);
   const distanceData = await fetch(
     getUrl(payloadData),
     requestOptions as RequestInit
