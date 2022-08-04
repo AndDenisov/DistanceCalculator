@@ -12,6 +12,11 @@ const getRequestOptions = (value) => ({
 export default function Index() {
   const [landingAddress, setLandingAddress] = React.useState(null);
   const [containerAddress, setContainerAddress] = React.useState(null);
+  const [distance, setDistance] = React.useState(0);
+
+  React.useEffect(() => {
+    distance && setDistance(0);
+  }, [landingAddress, containerAddress])
 
   const fetchDistance = async () => {
     const response = await fetch(
@@ -27,8 +32,8 @@ export default function Index() {
         },
       })
     );
-    const data = await response.json();
-    console.log(data);
+    const {distance} = await response.json();
+    setDistance(distance);
   };
 
   return (
@@ -42,6 +47,7 @@ export default function Index() {
         onChange={(value) => setContainerAddress(value)}
       />
       <Button onClick={fetchDistance}>Рассчитать расстояние</Button>
+      {!!distance && <div>{distance} км</div>}
     </div>
   );
 }

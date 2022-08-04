@@ -1,5 +1,5 @@
 const getUrl = ({ landing, container }) =>
-  `https://api.routing.yandex.net/v2/route?apiKey=04711eb6-e99c-4155-9ce6-73fc2f961acc&waypoints=${landing.lat},${landing.lon}|${container.lat},${container.lon}&avoid_tolls=true`;
+  `https://api.routing.yandex.net/v2/route?apikey=04711eb6-e99c-4155-9ce6-73fc2f961acc&waypoints=${landing.lat},${landing.lon}|${container.lat},${container.lon}&avoid_tolls=true`;
 
 const requestOptions = {
   method: 'GET',
@@ -13,9 +13,16 @@ const requestOptions = {
 export default async function handler(req, res) {
   const { body } = req;
   const payloadData = JSON.parse(body);
-  const distanceData = await fetch(
+  const response = await fetch(
     getUrl(payloadData),
     requestOptions as RequestInit
   );
-  res.status(200).send({ data: distanceData });
+  const {route} = await response.json();
+  const distance = Math.round(route.legs.reduce((acc, item) => {
+    if (item.status === "OK") {
+      acc += item.steps.reduce((acc, step) => acc + step.length, 0);
+    }
+    return acc;
+  }, 0) / 1000);
+  res.status(200).send({ distance });
 }
