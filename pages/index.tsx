@@ -14,7 +14,7 @@ export default function Index() {
   const [containerAddress, setContainerAddress] = React.useState(null);
 
   const fetchDistance = async () => {
-    const data = await fetch(
+    const response = await fetch(
       url,
       getRequestOptions({
         landing: {
@@ -27,6 +27,7 @@ export default function Index() {
         },
       })
     );
+    const data = await response.json();
     console.log(data);
   };
 
